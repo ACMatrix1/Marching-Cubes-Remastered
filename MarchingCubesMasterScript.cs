@@ -52,23 +52,10 @@ public class MarchingCubesMasterScript : MonoBehaviour
 
     //Prepares Point Grid
     private void InitializeChunks()
-    {
-        PointsVerts = new Vector3[Size,Size,Size];
+    { 
         vertexVals = new float[8];
 
         MeshFil = GetComponent<MeshFilter>();
-
-        for (int Y = 0; Y < Size; Y++)
-        {
-            for (int Z = 0; Z < Size; Z++)
-            {
-                for (int X = 0; X < Size; X++)
-                {
-                    PointsVerts[X, Y, Z] = new Vector3(X, Y, Z);
-                    
-                }
-            }
-        }
 
         VertexSamplingNoiseBased();
     }
@@ -89,9 +76,6 @@ public class MarchingCubesMasterScript : MonoBehaviour
             | /        | /
             0 -------- 1
 */
-
-
-
         for (int Y = 0; Y < Size - 1; Y++)
         {
             for (int Z = 0; Z < Size - 1; Z++)
@@ -100,15 +84,6 @@ public class MarchingCubesMasterScript : MonoBehaviour
                 {
                     if (NoiseGeneration == true)
                     {
-/*                        vertexVals[0] = Perlin3D(PointsVerts[X, Y, Z].x, PointsVerts[X, Y, Z].y, PointsVerts[X, Y, Z].y, Density, Scale) * Amp;
-                        vertexVals[1] = Perlin3D(PointsVerts[X + 1, Y, Z].x, PointsVerts[X + 1, Y, Z].y, PointsVerts[X + 1, Y, Z].y, Density, Scale) * Amp;
-                        vertexVals[2] = Perlin3D(PointsVerts[X + 1, Y + 1, Z].x, PointsVerts[X + 1, Y + 1, Z].y, PointsVerts[X + 1, Y + 1, Z].y, Density, Scale) * Amp;
-                        vertexVals[3] = Perlin3D(PointsVerts[X, Y + 1, Z].x, PointsVerts[X, Y + 1, Z].y, PointsVerts[X, Y + 1, Z].y, Density, Scale) * Amp;
-                        vertexVals[4] = Perlin3D(PointsVerts[X, Y, Z + 1].x, PointsVerts[X, Y, Z + 1].y, PointsVerts[X, Y, Z + 1].y, Density, Scale) * Amp;
-                        vertexVals[5] = Perlin3D(PointsVerts[X + 1, Y, Z + 1].x, PointsVerts[X + 1, Y, Z + 1].y, PointsVerts[X + 1, Y, Z + 1].y, Density, Scale) * Amp;
-                        vertexVals[6] = Perlin3D(PointsVerts[X + 1, Y + 1, Z + 1].x, PointsVerts[X + 1, Y + 1, Z + 1].y, PointsVerts[X + 1, Y + 1, Z + 1].y, Density, Scale) * Amp;
-                        vertexVals[7] = Perlin3D(PointsVerts[X, Y + 1, Z + 1].x, PointsVerts[X, Y + 1, Z + 1].y, PointsVerts[X, Y + 1, Z + 1].y, Density, Scale) * Amp;*/
-
                         vertexVals[0] = Perlin3D(X, Y,Z, Density, Scale) * Amp;
                         vertexVals[1] = Perlin3D(X + 1, Y, Z, Density, Scale) * Amp;
                         vertexVals[2] = Perlin3D(X + 1, Y + 1, Z, Density, Scale) * Amp;
@@ -129,7 +104,7 @@ public class MarchingCubesMasterScript : MonoBehaviour
                         vertexVals[6] = Vector3.Distance(new Vector3(X + 1, Y + 1, Z + 1), SphereCentre);
                         vertexVals[7] = Vector3.Distance(new Vector3(X, Y + 1, Z + 1), SphereCentre);
                     }
-                    VertexProcessing(PointsVerts[X,Y,Z]);
+                    VertexProcessing(new Vector3(X,Y,Z));
                 }
             }
         }
@@ -201,7 +176,7 @@ public class MarchingCubesMasterScript : MonoBehaviour
                     {
                         for (int X = 0; X < Size; X++)
                         {
-                            float PerlVal = Perlin3D(PointsVerts[X, Y, Z].x, PointsVerts[X, Y, Z].y, PointsVerts[X, Y, Z].y, Density, Scale) * Amp;
+                            float PerlVal = Perlin3D(X, Y, Z, Density, Scale) * Amp;
                             if (PerlVal > Threshold)
                             {
                                 PerlVal = 0;
@@ -238,7 +213,7 @@ public class MarchingCubesMasterScript : MonoBehaviour
                                 Distance = 1;
                             }
                             Gizmos.color = new Color(Distance, Distance, Distance);
-                            Gizmos.DrawSphere(PointsVerts[X, Y, Z], 0.05f);
+                            Gizmos.DrawSphere(new Vector3(X, Y, Z), 0.05f);
 
                         }
                     }
